@@ -188,9 +188,9 @@ Implement a search endpoint that allows filtering products by name using a full-
     }  
 
 
-## Indexing: ✅
+## ✅ Indexing: 
 ~~Add indexing to the price column in the Variant table?~~  
-__Add indexing to the price column in the Product table (price is on the product, not variant-level)__✅   
+✅ __Add indexing to the price column in the Product table (price is on the product, not variant-level)__   
 Steps to do:  
 - Add indexing next to the field name, with ->index().
 
@@ -206,9 +206,9 @@ Links:
 [Steps to Create Custom Error Page in Laravel 10](https://magecomp.com/blog/create-custom-error-page-laravel-10/)
 
 
-## Define CRUD operations in the controllers from above ⛔
-### Install and prepare Swagger library  
-1. Install the Package:  
+## ⛔ Define CRUD operations in the controllers from above 
+### ✅ Install and prepare Swagger library  
+1. ✅ Install the Package:   
 First, you need to install the darkaonline/l5-swagger package via Composer. Open your terminal and run:  
 > composer require darkaonline/l5-swagger
 2. Publish Configuration:   

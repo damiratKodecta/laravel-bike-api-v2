@@ -4,12 +4,18 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+
+
+
+
 class ProductController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+
+
+    //-------------------------------------------
+    // Version 1 controller methods
+    //-------------------------------------------
+    public function indexV1()
     {
         //
         return Product::all();
