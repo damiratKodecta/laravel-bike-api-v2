@@ -97,8 +97,8 @@ Create React context which will handle all exceptions.
 ## Add tests 
 - to everything
 
-# **Solution**
-# Modify .env file
+# **Solution** 🎉 
+# ✅ Modify .env file
 Replace
 > #DB_CONNECTION=mysql  
 #DB_HOST=127.0.0.1  
@@ -115,8 +115,8 @@ DB_DATABASE=laravel
 DB_USERNAME=postgres  
 DB_PASSWORD=postgres  
 
-# Migration
-## Create migrations for each of the tables:
+# ✅ Migration
+## ✅ Create migrations for each of the tables:
 >php artisan make:migration create_product_types_table --create=product_types  
 php artisan make:migration create_products_table --create=products  
 php artisan make:migration create_products_table --create=products  
@@ -153,19 +153,19 @@ After creating the migrations, you would run
 
 to apply these changes to your database.
 
-# Models
-## Create model files for each table:
+# ✅ Models
+## ✅ Create model files for each table:
 >php artisan make:model ProductType  
 php artisan make:model Product  
 php artisan make:model Variant
 
 
-## Create controllers for each model:
+## ✅ Create controllers for each model:
 >php artisan make:controller ProductTypeController --resource  
 php artisan make:controller ProductController --resource  
 php artisan make:controller VariantController --resource  
 
-## Search with Full Text Index:
+## ⛔ Search with Full Text Index:
 Implement a search endpoint that allows filtering products by name using a full-text index on the name column.
 
 >  public function up(): void  
@@ -183,16 +183,17 @@ Implement a search endpoint that allows filtering products by name using a full-
             $table->timestamps();  
             $table->foreign('product_type_id')->references('product_type_id')->on('product_types')->onDelete('cascade')->onUpdate('cascade');  
            });  
-
         // Add the full-text index  
     //DB::statement("ALTER TABLE products ADD FULLTEXT INDEX idx_name (name)");  
     }  
 
 
-## Indexing:
+## Indexing: ✅
 ~~Add indexing to the price column in the Variant table?~~  
-__Add indexing to the price column in the Product table (price is on the product, not variant-level)__  
-Add indexing next to the field name, with ->index().  
+__Add indexing to the price column in the Product table (price is on the product, not variant-level)__✅   
+Steps to do:  
+- Add indexing next to the field name, with ->index().
+
 More details on the [StackOverflow link](https://stackoverflow.com/questions/37350263/what-does-index-mean-in-laravel)
 
 
@@ -205,10 +206,25 @@ Links:
 [Steps to Create Custom Error Page in Laravel 10](https://magecomp.com/blog/create-custom-error-page-laravel-10/)
 
 
-## Define CRUD operations in the controllers from above
+## Define CRUD operations in the controllers from above ⛔
+### Install and prepare Swagger library  
+1. Install the Package:  
+First, you need to install the darkaonline/l5-swagger package via Composer. Open your terminal and run:  
+> composer require darkaonline/l5-swagger
+2. Publish Configuration:   
+After installing the package, publish its configuration file by running the following command:  
+> php artisan vendor:publish --provider "L5Swagger\L5SwaggerServiceProvider"
+3. Configuration:  
+After publishing the configuration, you can configure Swagger in the config/l5-swagger.php file. You can set options such as the path to your API annotations, the location of your Swagger UI, etc.  
+4. Annotations:  
+Use annotations to describe your API endpoints. You can use annotations like @SWG\Info, @SWG\Get, @SWG\Post, etc., to document your endpoints. Annotate your controller methods with these annotations.  
 
-### Note on migrations from github
-[Cloning Laravel Project from Github]https://stackoverflow.com/questions/38602321/cloning-laravel-project-from-github
+Once your annotations are in place, you can generate the Swagger documentation by running:  
+> php artisan l5-swagger:generate
+
+### ℹ️ Note on migrations from github
+[Cloning Laravel Project from Github](https://stackoverflow.com/questions/38602321/cloning-laravel-project-from-github)  
+Steps to do:  
 - Clone your project
 - Go to the folder application using cd command on your cmd or terminal
 - Run composer install on your cmd or terminal
