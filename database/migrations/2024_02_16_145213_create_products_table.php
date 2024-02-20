@@ -30,6 +30,21 @@ return new class extends Migration
      */
     public function down(): void
     {
+
+        Schema::table('products', function (Blueprint $table) {
+            // Drop the index on the price column
+            $table->dropIndex(['price']);
+    
+            // Drop the full-text index on the name column
+            // Note: The method name varies depending on the database system.
+            // For example, for MySQL, it's `dropIndex`, and for PostgreSQL, it's `dropIndexIfExists`.
+            if (DB::getDriverName() === 'mysql') {
+                $table->dropIndex('idx_name');
+            } elseif (DB::getDriverName() === 'pgsql') {
+                $table->dropIndex('products_name_index');
+            }
+        });
+    
         Schema::dropIfExists('products');
     }
 };
