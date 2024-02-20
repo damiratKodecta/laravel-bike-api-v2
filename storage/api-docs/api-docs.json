@@ -165,6 +165,44 @@
                         "description": "Product with the specified ID ($id) not found"
                     }
                 }
+            },
+            "delete": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Delete a single product by ID",
+                "description": "Display the specified product.",
+                "operationId": "e7be6623c91cdf1bfcbb28e85f2db656",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the product to delete",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The product with the specified ID ($id) deleted successfully!",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Product"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "The product with the specified ID ($id) not found!"
+                    },
+                    "500": {
+                        "description": "Failed to delete the product with the specified ID ($id)!"
+                    }
+                }
             }
         },
         "/api/v1/products/{productId}/{variantId}": {
@@ -219,7 +257,6 @@
         "schemas": {
             "Product": {
                 "required": [
-                    "product_id",
                     "product_type_id",
                     "name",
                     "price"

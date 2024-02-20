@@ -23,12 +23,22 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 // Version 1 of the API
 Route::prefix('v1')->group(function () {
 
+    // GET routes
     Route::get('/products', [ProductController::class, 'indexV1']);
     Route::get('/products/{product}', [ProductController::class, 'showProductV1']);
-    Route::post('/products', [ProductController::class, 'storeProductV1']);
     Route::get('/products/{product}/{variant}', [ProductController::class, 'showProductVariantV1']);
-    /*  Route::post('/tasks', [TaskController::class, 'storeV1']);
-    Route::get('/tasks/{task}', [TaskController::class, 'showV1']);
+
+    // POST routes
+    Route::post('/products', [ProductController::class, 'storeProductV1']);
+    
+    // PUT/PATCH routes
+    //Route::put('/products/{product}', [ProductController::class, 'updateProductV1']);
+    //Route::patch('/products/{product}', [ProductController::class, 'updateProductV1']); 
+    
+    // DELETE routes
+    Route::delete('/products/{id}', [ProductController::class, 'deleteProductV1']);
+    
+    /*  
     Route::put('/tasks/{task}', [TaskController::class, 'updateV1']);
     Route::delete('/tasks/{task}', [TaskController::class, 'destroyV1']);
     */  

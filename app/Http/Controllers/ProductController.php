@@ -328,11 +328,66 @@ class ProductController extends Controller
         //
     }
 
+
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+
+    /**
+     * Display the specified product.
+     *
+     * @param  int  $id
+     * @return Response
+     *
+     * @OA\Delete(
+     *      path="/api/v1/products/{id}",
+     *      summary="Delete a single product by ID",
+     *      tags={"Products"},
+     *      @OA\Parameter(
+     *          name="id",
+     *          in="path",
+     *          required=true,
+     *          description="ID of the product to delete",
+     *          @OA\Schema(
+     *              type="integer",
+     *              format="int64"
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="The product with the specified ID ($id) deleted successfully!",
+     *          @OA\JsonContent(ref="#/components/schemas/Product"),
+     *      ),
+     *      @OA\Response(
+     *          response=404,
+     *          description="The product with the specified ID ($id) not found!"
+     *      ),
+     *      @OA\Response(
+     *          response=500,
+     *          description="Failed to delete the product with the specified ID ($id)!"
+     *      ) 
+     * )
+     */ 
+
+    public function deleteProductV1(string $id)
     {
         //
+
+        try {
+            $product = Product::find($id);
+
+            if (!$product) {
+                return response()->json(['error' => "The product with the specified ID $id not found!"], 404);
+            }
+
+            $product->delete();
+            return response()->json(['message' => "The product with the specified ID $id deleted successfully!"], 200);
+
+        } catch (\Exception $e) {
+            return response()->json(['error' => "Failed to delete the product with the specified ID $id!"], 500);
+        }
+
+        return $product; //never triggers
+
     }
 }
