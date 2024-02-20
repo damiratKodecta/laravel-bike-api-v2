@@ -23,6 +23,7 @@ use Illuminate\Http\Request;
  *     @OA\Property(
  *         property="product_type_id",
  *         type="integer",
+ *         format="int64",
  *         description="The ID of the product type",
  *         example=1
  *     ),
@@ -42,9 +43,23 @@ use Illuminate\Http\Request;
  *     @OA\Property(
  *         property="price",
  *         type="number",
- *         format="float",
+ *         format="decimal",
  *         description="The price of the product",
  *         example=19.99
+ *     ),
+ *     @OA\Property(
+ *         property="created_at",
+ *         type="string",
+ *         format="date-time",
+ *         description="The creation timestamp of the product",
+ *         readOnly=true
+ *     ),
+ *     @OA\Property(
+ *         property="updated_at",
+ *         type="string",
+ *         format="date-time",
+ *         description="The last update timestamp of the product",
+ *         readOnly=true
  *     )
  * )
  */
@@ -80,31 +95,222 @@ class ProductController extends Controller
     public function indexV1()
     {
         return Product::all();
+        /* TODO 
+        try catch 
+        */
     }
     
+   
     /**
-     * Show the form for creating a new resource.
+     * Create a newly created resource in storage.
      */
-    public function create()
+
+
+         /**
+     * @OA\Post(
+     *     path="/api/v1/products",
+     *     tags={"Products"},
+     *     summary="Create a new product",
+     *     operationId="createProduct",
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(ref="#/components/schemas/Product")
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Product created successfully",
+     *         @OA\JsonContent(ref="#/components/schemas/Product")
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="Validation error",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(
+     *                 property="message",
+     *                 type="string",
+     *                 example="The given data was invalid."
+     *             ),
+     *             @OA\Property(
+     *                 property="errors",
+     *                 type="object",
+     *                 example={
+     *                     "name": {"The name field is required."},
+     *                     "price": {"The price field is required."}
+     *                 }
+     *             )
+     *         )
+     *     ),
+     *      @OA\Response(
+     *         response=500,
+     *         description="Server error",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(
+     *                 property="message",
+     *                 type="string",
+     *                 example="Server Error"
+     *             ),
+     *             @OA\Property(
+     *                 property="error",
+     *                 type="string",
+     *                 example="Internal Server Error"
+     *             )
+     *         )
+     *     ), 
+     *      @OA\Response(
+     *         response=503,
+     *         description="Database error",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(
+     *                 property="message",
+     *                 type="string",
+     *                 example="Database Error"
+     *             ),
+     *             @OA\Property(
+     *                 property="error",
+     *                 type="string",
+     *                 example="Database Server Error"
+     *             )
+     *         )
+     *     )
+     * )
+     */
+
+    public function storeProductV1(Request $request)
     {
-        //
+        try {
+            $request->validate([
+                'product_type_id' => 'required',
+                'name' => 'required|string|max:255',
+                'description' => 'nullable|string',
+                'price' => 'required|numeric|min:0' //numeric, not number, not float, etc...
+            ]);
+    
+            $product = Product::create($request->all());
+
+            return response()->json($product, 201);
+    
+        } catch (ValidationException $e) {
+            return response()->json(['message' => 'Validation Error', 'errors' => $e->errors()], 422);
+        } catch (QueryException $e) {
+            return response()->json(['message' => 'Database Error', 'error' => $e->getMessage()], 503);
+        } catch (Exception $e) {
+            return response()->json(['message' => 'Server Error', 'error' => $e->getMessage()], 500);
+        }
     }
+        
 
     /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+     * Display the specified product.
+     *
+     * @param  int  $id
+     * @return Response
+     *
+     * @OA\Get(
+     *      path="/api/v1/products/{id}",
+     *      summary="Get a single product by ID",
+     *      tags={"Products"},
+     *      @OA\Parameter(
+     *          name="id",
+     *          in="path",
+     *          required=true,
+     *          description="ID of the product to retrieve",
+     *          @OA\Schema(
+     *              type="integer",
+     *              format="int64"
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="The product with the specified ID ($id) retrieved successfully.",
+     *          @OA\JsonContent(ref="#/components/schemas/Product"),
+     *      ),
+     *      @OA\Response(
+     *          response=404,
+     *          description="Product with the specified ID ($id) not found"
+     *      )
+     * )
+     */ 
+
+    public function showProductV1(string $id)
     {
         //
+         $product = Product::find($id);
+
+         if (!$product) {
+            $resp = 'Product with the specified ID :id not found';
+             return response()->json(['error' => trans($resp, ['id' => $id]) ], 404);
+         }
+ 
+         return $product;
     }
 
+
+
+
     /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
+     * Display the specified variant within specified product .
+     *
+     * @param  int  $productId
+     * @param  int  $variantId
+     * @return Response
+     *
+     * @OA\Get(
+     *      path="/api/v1/products/{productId}/{variantId}",
+     *      summary="Get a single variant for a specified product by ID",
+     *      tags={"Products"},
+     *      @OA\Parameter(
+     *          name="productId",
+     *          in="path",
+     *          required=true,
+     *          description="ID of the product containing the variant to retrieve",
+     *          @OA\Schema(
+     *              type="integer",
+     *              format="int64"
+     *          )
+     *      ),
+     * *      @OA\Parameter(
+     *          name="variantId",
+     *          in="path",
+     *          required=true,
+     *          description="ID of the variant to retrieve",
+     *          @OA\Schema(
+     *              type="integer",
+     *              format="int64"
+     *          )
+     *      ),
+     
+     *      @OA\Response(
+     *          response=200,
+     *          description="The variant with the specified ID ($variantId) of the product with the specified ID ($productId) retrieved successfully.",
+     *          @OA\JsonContent(ref="#/components/schemas/Product"),
+     *      ),
+     *      @OA\Response(
+     *          response=404,
+     *          description="The variant with the specified ID ($variantId) of the product with the specified ID ($productId) not found"
+     *      )
+     * )
+     */ 
+
+     public function showProductVariantV1(string $productId, string $variantId)
+     {
+         //
+          $product = Product::find($productId);
+ 
+          if (!$product) {
+              return response()->json(['error' => "The variant with the specified ID $variantId of the product with the specified ID $productId not found" ], 404);
+          }
+
+          $variation = $product->find($variantId);
+
+          if (!$variation) {
+            return response()->json(['error' => "The variant with the specified ID $variantId of the product with the specified ID $productId not found" ], 404);
+          }          
+  
+          return $variation;
+     }
 
     /**
      * Show the form for editing the specified resource.

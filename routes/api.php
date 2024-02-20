@@ -24,8 +24,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::prefix('v1')->group(function () {
 
     Route::get('/products', [ProductController::class, 'indexV1']);
-    
-   /*  Route::post('/tasks', [TaskController::class, 'storeV1']);
+    Route::get('/products/{product}', [ProductController::class, 'showProductV1']);
+    Route::post('/products', [ProductController::class, 'storeProductV1']);
+    Route::get('/products/{product}/{variant}', [ProductController::class, 'showProductVariantV1']);
+    /*  Route::post('/tasks', [TaskController::class, 'storeV1']);
     Route::get('/tasks/{task}', [TaskController::class, 'showV1']);
     Route::put('/tasks/{task}', [TaskController::class, 'updateV1']);
     Route::delete('/tasks/{task}', [TaskController::class, 'destroyV1']);

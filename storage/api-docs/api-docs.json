@@ -32,6 +32,186 @@
                         }
                     }
                 }
+            },
+            "post": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Create a new product",
+                "operationId": "createProduct",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Product"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Product created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Product"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "The given data was invalid."
+                                        },
+                                        "errors": {
+                                            "type": "object",
+                                            "example": {
+                                                "name": [
+                                                    "The name field is required."
+                                                ],
+                                                "price": [
+                                                    "The price field is required."
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Server Error"
+                                        },
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Internal Server Error"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "503": {
+                        "description": "Database error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Database Error"
+                                        },
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Database Server Error"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/products/{id}": {
+            "get": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Get a single product by ID",
+                "description": "Display the specified product.",
+                "operationId": "646bd23088b567bed3e1ec1014221f32",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the product to retrieve",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The product with the specified ID ($id) retrieved successfully.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Product"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Product with the specified ID ($id) not found"
+                    }
+                }
+            }
+        },
+        "/api/v1/products/{productId}/{variantId}": {
+            "get": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Get a single variant for a specified product by ID",
+                "description": "Display the specified variant within specified product .",
+                "operationId": "b7c25a56983578aa305d9d6adda3e637",
+                "parameters": [
+                    {
+                        "name": "productId",
+                        "in": "path",
+                        "description": "ID of the product containing the variant to retrieve",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    },
+                    {
+                        "name": "variantId",
+                        "in": "path",
+                        "description": "ID of the variant to retrieve",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The variant with the specified ID ($variantId) of the product with the specified ID ($productId) retrieved successfully.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Product"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "The variant with the specified ID ($variantId) of the product with the specified ID ($productId) not found"
+                    }
+                }
             }
         }
     },
@@ -39,6 +219,7 @@
         "schemas": {
             "Product": {
                 "required": [
+                    "product_id",
                     "product_type_id",
                     "name",
                     "price"
@@ -47,6 +228,7 @@
                     "product_type_id": {
                         "description": "The ID of the product type",
                         "type": "integer",
+                        "format": "int64",
                         "example": 1
                     },
                     "name": {
@@ -63,8 +245,20 @@
                     "price": {
                         "description": "The price of the product",
                         "type": "number",
-                        "format": "float",
+                        "format": "decimal",
                         "example": 19.99
+                    },
+                    "created_at": {
+                        "description": "The creation timestamp of the product",
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    },
+                    "updated_at": {
+                        "description": "The last update timestamp of the product",
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
                     }
                 },
                 "type": "object"

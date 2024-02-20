@@ -11,7 +11,7 @@ class Variant extends Model
 
     protected $primaryKey = 'variant_id';
     protected $fillable = ['product_id', 'name', 'value'];
-    public $timestamps = false;
+    public $timestamps = true;
 
     public function product()
     {

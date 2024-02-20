@@ -12,7 +12,7 @@ class Product extends Model
     protected $primaryKey = 'product_id';
     protected $fillable = ['product_type_id', 'name', 'description', 'price'];
     protected $casts = ['price' => 'decimal:2'];
-    public $timestamps = false;
+    public $timestamps = true;
 
 
 

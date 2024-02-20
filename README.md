@@ -228,13 +228,16 @@ Use annotations to describe your API endpoints. You can use annotations like @SW
 [Laravel Api Documentation Generator With OpenAPI/Swagger Using DarkaOnLine/L5-Swagger](https://fajarwz.com/blog/laravel-api-documentation-generator-with-open-api-swagger-using-darkaonline-l5-swagger/)  
 [Laravel + Swagger ](https://codingdriver.com/laravel-api-documentation-with-swagger-open-api-and-passport.html)
 
-### ✅ READ ALL Operation
-> /api/v1/products  
-http://localhost:8000/api/v1/products
+### ✅ READ Operations
+#### Product Model - Products API
+> /api/v1/products - http://localhost:8000/api/v1/products  
+/api/v1/products/{id} - http://127.0.0.1:8000/api/v1/products/1  
+/api/v1/products/{productId}/{variantId} - http://127.0.0.1:8000/api/v1/products/1/3  
 
 Swagger description:  
-> http://127.0.0.1:8000/api/documentation#/Products/getProductsList
+> http://127.0.0.1:8000/api/documentation#/Products  
 
+### ✅ CREATE Operations
 
 
 ### ℹ️ Note on migrations from github
