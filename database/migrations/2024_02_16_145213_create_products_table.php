@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('product_type_id');
             $table->string('name', 255)->fullText(); //Adds a full text index (MySQL/PostgreSQL).
             $table->text('description')->nullable();
-            $table->decimal('price', 10, 2);
+            $table->decimal('price', 10, 2)->index(); //Adds index on the price
             $table->timestamps();
             $table->foreign('product_type_id')->references('product_type_id')->on('product_types')->onDelete('cascade')->onUpdate('cascade');
            });

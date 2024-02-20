@@ -190,7 +190,8 @@ Implement a search endpoint that allows filtering products by name using a full-
 
 
 ## Indexing:
-Add indexing to the price column in the Variant table?
+~~Add indexing to the price column in the Variant table?~~  
+__Add indexing to the price column in the Product table (price is on the product, not variant-level)__  
 Add indexing next to the field name, with ->index().  
 More details on the [StackOverflow link](https://stackoverflow.com/questions/37350263/what-does-index-mean-in-laravel)
 
@@ -205,3 +206,17 @@ Links:
 
 
 ## Define CRUD operations in the controllers from above
+
+### Note on migrations from github
+[Cloning Laravel Project from Github]https://stackoverflow.com/questions/38602321/cloning-laravel-project-from-github
+- Clone your project
+- Go to the folder application using cd command on your cmd or terminal
+- Run composer install on your cmd or terminal
+- Copy .env.example file to .env on the root folder.
+- Open your .env file and change the database name (DB_DATABASE) to whatever you have, username (DB_USERNAME) and password (DB_PASSWORD) field correspond to your configuration.
+- Run php artisan key:generate
+- Run php artisan migrate
+- Run php artisan serve
+
+
+
