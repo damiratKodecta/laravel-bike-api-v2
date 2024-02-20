@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProductController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,8 +21,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 // Version 1 of the API
 Route::prefix('v1')->group(function () {
-    // Task Routes
+
     Route::get('/products', [ProductController::class, 'indexV1']);
+    
    /*  Route::post('/tasks', [TaskController::class, 'storeV1']);
     Route::get('/tasks/{task}', [TaskController::class, 'showV1']);
     Route::put('/tasks/{task}', [TaskController::class, 'updateV1']);
