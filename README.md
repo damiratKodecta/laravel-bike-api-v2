@@ -208,19 +208,34 @@ Links:
 
 ## ⛔ Define CRUD operations in the controllers from above 
 ### ✅ Install and prepare Swagger library  
-1. ✅ Install the Package:   
+✅ 1. Install the Package:   
 First, you need to install the darkaonline/l5-swagger package via Composer. Open your terminal and run:  
-> composer require darkaonline/l5-swagger
-2. Publish Configuration:   
+> composer require darkaonline/l5-swagger  
+
+✅ 2. Publish Configuration:   
 After installing the package, publish its configuration file by running the following command:  
-> php artisan vendor:publish --provider "L5Swagger\L5SwaggerServiceProvider"
-3. Configuration:  
+> php artisan vendor:publish --provider "L5Swagger\L5SwaggerServiceProvider"  
+
+✅ 3. Configuration:  
 After publishing the configuration, you can configure Swagger in the config/l5-swagger.php file. You can set options such as the path to your API annotations, the location of your Swagger UI, etc.  
-4. Annotations:  
+✅ 4. Annotations:  
 Use annotations to describe your API endpoints. You can use annotations like @SWG\Info, @SWG\Get, @SWG\Post, etc., to document your endpoints. Annotate your controller methods with these annotations.  
 
-Once your annotations are in place, you can generate the Swagger documentation by running:  
-> php artisan l5-swagger:generate
+✅ Once your annotations are in place, you can generate the Swagger documentation by running:  
+> php artisan l5-swagger:generate  
+
+ℹ️  Additional info:   
+[Laravel Api Documentation Generator With OpenAPI/Swagger Using DarkaOnLine/L5-Swagger](https://fajarwz.com/blog/laravel-api-documentation-generator-with-open-api-swagger-using-darkaonline-l5-swagger/)  
+[Laravel + Swagger ](https://codingdriver.com/laravel-api-documentation-with-swagger-open-api-and-passport.html)
+
+### ✅ READ ALL Operation
+> /api/v1/products  
+http://localhost:8000/api/v1/products
+
+Swagger description:  
+> http://127.0.0.1:8000/api/documentation#/Products/getProductsList
+
+
 
 ### ℹ️ Note on migrations from github
 [Cloning Laravel Project from Github](https://stackoverflow.com/questions/38602321/cloning-laravel-project-from-github)  

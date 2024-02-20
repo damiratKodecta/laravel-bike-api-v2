@@ -1,0 +1,74 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Bike API",
+        "description": "API for the Bike preparation",
+        "contact": {
+            "email": "damir.omerasevic@kodecta.com"
+        },
+        "version": "1.0.1"
+    },
+    "paths": {
+        "/api/v1/products": {
+            "get": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Get list of products",
+                "description": "Returns list of products",
+                "operationId": "getProductsList",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Product"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Product": {
+                "required": [
+                    "product_type_id",
+                    "name",
+                    "price"
+                ],
+                "properties": {
+                    "product_type_id": {
+                        "description": "The ID of the product type",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "name": {
+                        "description": "The name of the product",
+                        "type": "string",
+                        "maxLength": 255,
+                        "example": "Product 1"
+                    },
+                    "description": {
+                        "description": "The description of the product",
+                        "type": "string",
+                        "example": "This is a product description"
+                    },
+                    "price": {
+                        "description": "The price of the product",
+                        "type": "number",
+                        "format": "float",
+                        "example": 19.99
+                    }
+                },
+                "type": "object"
+            }
+        }
+    }
+}
